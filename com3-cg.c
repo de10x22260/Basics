@@ -27,7 +27,6 @@ uint8_t ODM_com_checksum_calc(uint8_t CID, uint8_t p_data[], uint8_t len) {
 
 
 
-
 //Driver code
 int main() {
    // Example frame: {Start, CID, Alarm, Voltage MSB, Voltage LSB, Checksum}
@@ -44,10 +43,12 @@ int main() {
        printf("Checksum mismatch. Expected: 0x%02X, Found: 0x%02X\n", checksum_calc, frame[CHECKSUM_INDEX]);
        return 0;
    }
+
+   
    // Check if battery is present
    if ((frame[ALARM_BYTE_INDEX] & NO_BATTERY_ALARM_BIT) == 0) {
        uint16_t voltage_mv = (frame[VOLTAGE_MSB_INDEX] << 8) | frame[VOLTAGE_LSB_INDEX];
-       printf("Battery present. Voltage: %d mV\n", voltage_mv);
+       printf("Battery Voltage: %d mV\n", voltage_mv/1000);                               //voltage calculate in volts
    } else {
        printf("No Battery Alarm Active. Skipping voltage read.\n");
    }
